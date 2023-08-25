@@ -1,0 +1,16 @@
+[package]
+authors = ["Jonathan 'theJPster' Pallant <github@thejpster.org.uk>"]
+edition = "2021"
+homepage = "https://github.com/neotron-compute/tlv320aic23"
+license = "MIT OR Apache-2.0"
+name = "tlv320aic23"
+readme = "README.md"
+repository = "https://github.com/neotron-compute/tlv320aic23.git"
+version = "0.1.0"
+
+[dependencies]
+embedded-hal = "0.2"
+defmt = { version = "=0.3.2", optional = true }
+
+[features]
+defmt-log = ["defmt"]
