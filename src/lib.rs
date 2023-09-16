@@ -39,14 +39,14 @@
 //!     // Codec didn't respond
 //! }
 //! codec.set_digital_interface_enabled(true);
-//! codec.set_dac_enable(true);
+//! codec.set_dac_selected(true);
 //! codec.set_dac_mute(false);
 //! codec.set_bypass(false);
 //! codec.set_line_input_mute(true, tlv320aic23::Channel::Both);
 //! codec.set_powered_on(tlv320aic23::Subsystem::AnalogDigitalConverter, true);
 //! codec.set_powered_on(tlv320aic23::Subsystem::MicrophoneInput, true);
 //! codec.set_powered_on(tlv320aic23::Subsystem::LineInput, true);
-//! codec.set_headphone_output_volume_steps(50, tlv320aic23::Channel::Both);
+//! codec.set_headphone_output_volume(50, tlv320aic23::Channel::Both);
 //! codec.set_sample_rate(
 //!     tlv320aic23::CONFIG_USB_44K1,
 //!     tlv320aic23::LrSwap::Disabled,
@@ -485,7 +485,10 @@ impl Codec {
             self.get_register_bits(Register::LeftChannelHeadphoneVolumeControl, MASK) as u8;
         let steps_right =
             self.get_register_bits(Register::RightChannelHeadphoneVolumeControl, MASK) as u8;
-        (steps_left.saturating_sub(48), steps_right.saturating_sub(48))
+        (
+            steps_left.saturating_sub(48),
+            steps_right.saturating_sub(48),
+        )
     }
 
     /// Set sidetone level
@@ -579,9 +582,9 @@ impl Codec {
     }
 
     /// Get which audio input goes to the ADC.
-    /// 
+    ///
     /// See [`Codec::set_audio_input`]
-    pub fn get_audio_input(&self) -> AudioInput{
+    pub fn get_audio_input(&self) -> AudioInput {
         if self.get_register_bits(Register::AnalogAudioPathControl, 1 << 2) == 0 {
             AudioInput::LineInput
         } else {
@@ -614,7 +617,7 @@ impl Codec {
     }
 
     /// Control whether the DAC is head at the analog output.
-    /// 
+    ///
     /// The DAC must be selected (pass `true` here) to hear it on the speakers.
     ///
     /// Call [`Codec::sync`] to have this change take effect.
@@ -628,7 +631,7 @@ impl Codec {
     }
 
     /// Get whether the DAC is enabled or disabled.
-    /// 
+    ///
     /// See [`Codec::set_dac_selected`]
     pub fn get_dac_selected(&self) -> bool {
         self.get_register_bits(Register::DigitalAudioPathControl, 1 << 4) != 0
