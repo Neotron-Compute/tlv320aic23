@@ -1,5 +1,6 @@
 [package]
 authors = ["Jonathan 'theJPster' Pallant <github@thejpster.org.uk>"]
+description = "Driver for the registers on a TLV320AIC23B I²C Audio CODEC"
 edition = "2021"
 homepage = "https://github.com/neotron-compute/tlv320aic23"
 license = "MIT OR Apache-2.0"
@@ -9,8 +10,8 @@ repository = "https://github.com/neotron-compute/tlv320aic23.git"
 version = "0.1.0"
 
 [dependencies]
-embedded-hal = "0.2"
 defmt = { version = "=0.3.2", optional = true }
+embedded-hal = "0.2"
 
 [features]
 defmt-log = ["defmt"]
